@@ -1,0 +1,235 @@
+<html>
+    <head>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+        <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+        <script src='https://d3js.org/d3.v5.min.js'></script>
+        <script src="assets/js/owid-covid-data.js"></script>
+        <script src="assets/js/d3functions2.js"></script>
+        <script src="assets/js/companies_data.js"></script>
+        <link rel="stylesheet" href="assets/css/styles.css"/>
+    </head>
+    <body>
+        <div class="header">
+            <div class="logo">
+                <img src="assets/images/university-of-illinois-urbana-champaign_logo.png"/>
+            </div>
+            <div class="introduction">
+                <div><strong>Narrative Visualization</strong></div>
+                <div>CS 498</div>
+                <div>Professor: John C. Hart</div>
+                <div>University of Illinois at Urbanah-Champaign</div>
+                <br/>
+                <div>Negin Kashkooli</div>
+            </div>
+        </div>
+        <input
+            class="btn btn-primary btn-back"
+            action="action"
+            onclick="window.history.go(-1); return false;"
+            type="submit"
+            value="Back"
+        />
+        <div class="message">
+            <p><strong>This page shows the information related to the impact of covid-19 new cases on the stock price of the company.</strong></p>
+            <p>You can also see the other information regarding the growth of covid-19 cases and stock price on the right hand side.</p>
+        </div>
+        <div id="app1">
+            <div v-show="itemShow" class="container">
+                <div class="row">
+                    <div class="col svg-col">
+                        <h3 class="company-title">Impact of Covid-19 New Cases on {{company}} Stock Price</h3>
+                        <h3 class="sub-title">{{dateRange}}</h3>
+                        <div class="svg-container"></div>                        
+                    </div>
+                    <div class="col information-col" v-if="statistics !== undefined && statistics != null && statistics != {}">
+                        <div><p>Growth Information</p></div>
+                        <div>{{company}}'s growth in this period of time: <strong> {{statistics.companyGrowth | toFormattedDollor}}</strong></div>
+                        <div>United States's Covid-19 growth in this period of time: <strong> {{statistics.covidGrowth | toFormatted}}</strong></div>
+                            <div class="navigation">
+                                <a class="nav-link" href="index3.html">Compare with World's Covid-19 Growth</a>
+                            </div>
+                    </div>                    
+                </div>
+            </div>
+            <div v-show="!itemShow"  class="loading">
+                <img src="assets/images/loading.gif"/>
+            </div>
+        </div>
+        <!-- <div class="information-container">
+            <div class="svg-container"></div>
+        </div> -->
+        <div class="row footer">
+            <div class="col">
+                <div>© All rights reserved. </div>
+            </div>
+        </div>
+    </body>
+</html>
+<script>
+var app = new Vue({
+    el: '#app1',
+    data: {
+      countries: [],
+      graphdata: "",
+      companyData: [],
+      country:{},
+      dateRange:"",
+      company: "",
+      statistics: {},
+      itemShow: false
+    },
+    methods:{        
+    },
+    created(){
+        var self = this;
+        self.graphdata = JSON.parse(covid_data);
+
+        self.companyData = JSON.parse(companies_data);
+        self.companyData = self.companyData.sort(sortByDateAscending);        
+
+        self.country = self.graphdata[0];
+        self.dateRange = "";
+        
+        // Getting Graph Data
+        var url = window.location.href;
+        var company = 'Amazon'
+        var qArr = url.split('?')[1] != undefined && url.split('?')[1] != null ? url.split('?')[1].split('&') : ["q=1", "company=Amazon"];
+        if(qArr !== undefined && qArr != null && qArr.length > 0){
+            var q = qArr[0] !== undefined && qArr[0] != null ? qArr[0].replace("q=", "") : "1";
+            company = qArr[1] !== undefined && qArr[1] != null ? qArr[1].replace("company=", "") : "Amazon";
+            $(".nav-link").attr("href", "index3.html?q=" + q + "&company=" + company);
+            self.company = company;
+            var data = [];
+            var companies = [];
+            if(q=="1"){
+                self.graphdata.forEach(function(d){             
+                    if(new Date(d.date) < new Date('03/01/2020')){
+                        data.push(d);
+                        self.dateRange = "from Jan. to Mar. 2020";
+                    }
+                });
+
+
+                self.companyData.forEach(function(d){
+                    var date = new Date(d.Date).toLocaleDateString('en-ca');
+                    if(d.CompanyName == company && date < new Date('03/01/2020').toLocaleDateString('en-ca')){
+                        companies.push(d)
+                    }
+                });
+
+            }
+            else if(q=="2"){
+                self.graphdata.forEach(function(d){             
+                    if( new Date(d.date) > new Date('03/01/2020') && new Date(d.date) < new Date('05/01/2020')){
+                        data.push(d);
+                        self.dateRange = "from Mar. to May. 2020";
+                    }
+                });
+
+                self.companyData.forEach(function(d){
+                    var date = new Date(d.Date).toLocaleDateString('en-ca');
+                    if(d.CompanyName == company && date > new Date('03/01/2020').toLocaleDateString('en-ca')
+                        && date < new Date('05/01/2020').toLocaleDateString('en-ca')){
+                        companies.push(d)
+                    }
+                });
+            }
+            else if(q=="3"){
+                self.graphdata.forEach(function(d){             
+                    if(new Date(d.date) > new Date('05/01/2020') && new Date(d.date) < new Date('07/01/2020')){
+                        data.push(d);
+                        self.dateRange = "from May. to Jul. 2020";
+                    }
+                });
+
+                self.companyData.forEach(function(d){
+                    var date = new Date(d.Date).toLocaleDateString('en-ca');                        
+                    if(d.CompanyName == company && date > new Date('05/01/2020').toLocaleDateString('en-ca')
+                        && date < new Date('07/01/2020').toLocaleDateString('en-ca')){
+                        companies.push(d)
+                    }
+                });
+            }
+
+            
+
+
+            $.when(data, companies).done(function(d, c){
+                if(d.length > 0 && c.length > 0){                    
+                    self.graphdata = d;                    
+                    setTimeout(function(){
+                        var covidFirst = d[0].total_cases;
+                        var covidLast = d[d.length - 1].total_cases;
+                        var covidGrowth = covidLast - covidFirst;
+                        var stockFirst = parseInt(c[0].High.replace('$', ''));
+                        var stockLast = parseInt(c[c.length - 1].High.replace('$', ''));
+                        var stockGrowth = stockLast - stockFirst;
+
+                        self.statistics = {"companyGrowth": stockGrowth, "covidGrowth": covidGrowth}
+
+
+
+                        self.itemShow = true;
+                        render(d, c, self.dateRange);
+                    }, 100);
+                }
+            });
+        }
+
+
+        // End of Getting Graph Data
+
+    },
+    filters:{
+        toFormatted(number){
+            return formatNumber(number);
+        },
+        toFormattedDollor(number){
+            if(number > 0){
+                return "$" + number;
+            }
+            else{
+                return "-$" + (-1)*number;
+            }
+        }
+    }
+});
+
+
+function filterDateRange(graphdata){
+    var self = this;
+    var q = "1";
+    var data = [];
+    if(q==1){
+        self.graphdata.forEach(function(d){                    
+            if(new Date(d.Date) < new Date('01/03/2020')){
+                data.push(d);
+            }                    
+        });
+        $.when(data).done(function(d){
+            if(d.length > 0){
+                self.graphdata = d;
+            }
+        });
+    }
+}
+
+function formatNumber(number){
+    if(number !== undefined && number != null && number != ''){
+        number = parseInt(number);
+        return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+    }
+    if(number == 0){
+        return 0;
+    }
+    else{
+        return 'N/A'
+    }
+}
+
+function sortByDateAscending(a, b) {
+    return new Date(a.Date) - new Date(b.Date);
+}
+
+</script>
