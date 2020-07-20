@@ -4,7 +4,6 @@
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
         <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
         <script src='https://d3js.org/d3.v5.min.js'></script>
-        <script src="assets/js/data_manipulator.js"></script>
         <script src="assets/js/owid-covid-data.js"></script>
         <script src="assets/js/companies_data.js"></script>
         <script src="assets/js/d3functions.js"></script>
@@ -48,6 +47,16 @@
                 <div class="row">
                     <div class="col svg-col">
                         <h3 class="title"><span>{{company.CompanyName}} Stock Growth in 2020</span></h3>
+                        <div class="time-period">
+                            <div class="early-pandemic">Early Pandemic</div>
+                            <div class="mid-pandemic">Mid Pandemic</div>
+                            <div class="late-pandemic">Late Pandemic</div>
+                        </div>
+                        <div class="time-period-message">
+                            <div class="click-message-1">Click the area to see the details<div class="arrow-down"></div></div>
+                            <div class="click-message-2">Click the area to see the details<div class="arrow-down"></div></div>
+                            <div class="click-message-3">Click the area to see the details<div class="arrow-down"></div></div>
+                        </div>
                         <div class="svg-container"></div>                        
                     </div>
                     <div class="col information-col" v-if="statistics !== undefined && statistics != null && statistics != {}">
@@ -157,7 +166,7 @@ var intervalId = 0;
     var selectedCompany = companyDropdown.options[companyDropdown.selectedIndex].value;
     var interval = 0;
     var companySelector = document.querySelector(".arrow-down");
-    if(selectedCompany == "Please select a company" && intervalId == 0){
+    if(selectedCompany == "Please select a company" && (intervalId == 0 || intervalId === undefined)){
         intervalId = window.setInterval(function(){
             companySelector.style.opacity = Math.abs(Math.sin(interval));
             interval += 0.01;
