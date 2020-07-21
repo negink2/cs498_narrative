@@ -49,6 +49,7 @@
                         <div>{{company}}'s growth in this period of time: <strong> {{statistics.companyGrowth | toFormattedDollor}}</strong></div>
                         <div>United States's Covid-19 growth in this period of time: <strong> {{statistics.countryCovidGrowth | toFormatted}}</strong></div>
                         <div>World's Covid-19 growth in this period of time: <strong> {{statistics.covidGrowth | toFormatted}}</strong></div>
+                        <div><strong>Outcome:</strong> {{company}}'s stock price has <strong>{{statistics.growth}}</strong> during <strong>{{pandemicPeriod}}</strong>.</div>
                     </div>
                 </div>
             </div>
@@ -78,7 +79,8 @@ var app = new Vue({
       dateRange:"",
       company: "",
       statistics: {},
-      itemShow: false
+      itemShow: false,
+      pandemicPeriod: ""
     },
     methods:{        
     },
@@ -126,6 +128,8 @@ var app = new Vue({
                     }
                 });
 
+                self.pandemicPeriod = "early pandemic";
+
             }
             else if(q=="2"){
                 self.graphdata.forEach(function(d){             
@@ -149,6 +153,8 @@ var app = new Vue({
                         companies.push(d)
                     }
                 });
+
+                self.pandemicPeriod = "mid pandemic";
             }
             else if(q=="3"){
                 self.graphdata.forEach(function(d){             
@@ -172,6 +178,8 @@ var app = new Vue({
                         companies.push(d)
                     }
                 });
+
+                self.pandemicPeriod = "late pandemic";
             }
 
             
@@ -192,8 +200,12 @@ var app = new Vue({
                         var stockFirst = parseInt(c[0].High.replace('$', ''));
                         var stockLast = parseInt(c[c.length - 1].High.replace('$', ''));
                         var stockGrowth = stockLast - stockFirst;
+                        var growth = "increased";
+                        if(stockGrowth < 0){
+                            growth = "decreased";
+                        }
 
-                        self.statistics = {"companyGrowth": stockGrowth, "covidGrowth": covidGrowth, "countryCovidGrowth": countryCovidGrowth}
+                        self.statistics = {"companyGrowth": stockGrowth, "covidGrowth": covidGrowth, "countryCovidGrowth": countryCovidGrowth, "growth": growth}
 
 
 
