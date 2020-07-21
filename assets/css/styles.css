@@ -176,7 +176,7 @@ padding-left: 120px;
     padding-top: 50px;
     background-color: #D1FAF0;
     border-radius: 5px 50px 5px;
-    max-height: 480px;
+    max-height: 550px;
     margin-top: 150px;
     margin-left: 80px;
 }
@@ -205,6 +205,7 @@ padding-left: 120px;
     background-color: #FF7A33;
     border-radius: 20%;
     padding: 20px;
+    padding-left: 30px;
 }
 
 /* SVG */
