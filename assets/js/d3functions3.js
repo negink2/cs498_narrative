@@ -1,6 +1,7 @@
-function render(data, companyData, dateRange) {
+function render(data, companyData, countryData, dateRange) {
 
     if(data !== undefined && data != null && data.length > 0
+        && countryData !== undefined && countryData != null && countryData.length > 0
         && companyData !== undefined && companyData != null && companyData.length > 0){
 
         var width = 500;
@@ -126,11 +127,42 @@ function render(data, companyData, dateRange) {
 
 
 
+        // Country Line
+        var line3 = d3.line()
+            .x(function(d) { 
+                var ddate = "";
+                //if(d.date != "2019-12-31"){
+                ddate = d3.timeParse("%Y-%m-%d")(d.date)
+                //}                   
+                return x(ddate);
+            })
+            .y(function(d) {
+                var cases = parseInt(d.new_cases);
+                var cases = cases < 0 ? 0: cases;
+                return y(cases) 
+            });
+
+        // line3
+        var pth3 = svg
+        .append("path")            
+        .datum(countryData)
+        .attr("d", line3)
+        .attr("class", "country-line")
+        .attr("fill", "none")
+        .attr("stroke-width", 2);
+
+        var lineLength3 = d3.select(".country-line").node().getTotalLength();
+        d3.selectAll(".country-line")
+        .attr("stroke-dasharray", lineLength3 + " " + lineLength3)
+        .attr("stroke-dashoffset", lineLength3)
+        .transition()
+        .duration(2500)
+        .ease(d3.easeLinear)
+        .attr("stroke-dashoffset", 0);
 
 
 
-
-
+        // World Line
         var line = d3.line()
             .x(function(d) { 
                 var ddate = "";
@@ -245,6 +277,46 @@ function render(data, companyData, dateRange) {
         .ease(d3.easeLinear)
         .attr("opacity", 1)
         .attr("stroke-dashoffset", lineLength2)
+
+
+
+        // Tooltip Country
+
+        var div3 = d3.select("body").append("div")	
+        .attr("class", "tooltip country-tooltip")				
+        .style("opacity", 0);
+
+        var dots3 = svg.selectAll("dot")	
+        .data(countryData)
+        .enter().append("circle")        
+        .attr("class", "country-dots")
+        .attr("r", 3)		
+        .attr("cx", function(d) { return x(d3.timeParse("%Y-%m-%d")(d.date)); })		 
+        .attr("cy", function(d) { return y(d.new_cases); })
+        .on("mouseover", function(d) {        	
+            div3.transition()		
+            .duration(200)		
+            .style("opacity", .9);        		
+            var htmlContent = "<div>Covid-19 Cases of the <span>" + d.location + "</span><br/></div>";
+            htmlContent += "<div>Date: <span>" + d3.timeFormat("%m/%d/%Y")(d3.timeParse("%Y-%m-%d")(d.date)) + "</span><br/></div>";
+            htmlContent += "<div>Number of New Cases: <span>"  + formatNumber(d.new_cases) + "</span><br/></div>";
+            htmlContent += "<div>Covid-19 Death Rate: <span>" + formatNumber(d.cvd_death_rate) + "</span><br/></div>";            
+            div3.html(htmlContent)	
+            .style("left", (d3.event.pageX) + "px")		
+            .style("top", (d3.event.pageY - 28) + "px");	
+        })
+        .on("mouseout", function(d) {		
+            div3.transition()		
+            .duration(500)
+            .style("opacity", 0);	
+        });
+
+        dots3.attr("opacity", 0)
+        .transition()
+        .duration(2500)
+        .ease(d3.easeLinear)
+        .attr("opacity", 1)
+        .attr("stroke-dashoffset", lineLength)
 
     }
 }

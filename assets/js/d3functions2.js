@@ -203,7 +203,7 @@ function render(data, companyData, dateRange) {
             div.transition()		
             .duration(200)		
             .style("opacity", .9);        		
-            var htmlContent = "<div>Country: <span>" + d.location + "</span><br/></div>";
+            var htmlContent = "<div>Covid-19 Cases of the <span>" + d.location + "</span><br/></div>";
             htmlContent += "<div>Date: <span>" + d3.timeFormat("%m/%d/%Y")(d3.timeParse("%Y-%m-%d")(d.date)) + "</span><br/></div>";
             htmlContent += "<div>Number of New Cases: <span>"  + formatNumber(d.new_cases) + "</span><br/></div>";
             htmlContent += "<div>Covid-19 Death Rate: <span>" + formatNumber(d.cvd_death_rate) + "</span><br/></div>";

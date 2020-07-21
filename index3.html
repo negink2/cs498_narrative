@@ -5,6 +5,7 @@
         <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
         <script src='https://d3js.org/d3.v5.min.js'></script>
         <script src="assets/js/owid-world-covid-data.js"></script>
+        <script src="assets/js/owid-covid-data.js"></script>
         <script src="assets/js/d3functions3.js"></script>
         <script src="assets/js/companies_data.js"></script>
         <link rel="stylesheet" href="assets/css/styles.css"/>
@@ -43,9 +44,10 @@
                         <h3 class="sub-title">{{dateRange}}</h3>
                         <div class="svg-container"></div>                        
                     </div>
-                    <div class="col information-col" v-if="statistics !== undefined && statistics != null && statistics != {}">
+                    <div class="col information-col all-comparisons" v-if="statistics !== undefined && statistics != null && statistics != {}">
                         <div><p>Growth Information</p></div>
                         <div>{{company}}'s growth in this period of time: <strong> {{statistics.companyGrowth | toFormattedDollor}}</strong></div>
+                        <div>United States's Covid-19 growth in this period of time: <strong> {{statistics.countryCovidGrowth | toFormatted}}</strong></div>
                         <div>World's Covid-19 growth in this period of time: <strong> {{statistics.covidGrowth | toFormatted}}</strong></div>
                     </div>
                 </div>
@@ -71,6 +73,7 @@ var app = new Vue({
       countries: [],
       graphdata: "",
       companyData: [],
+      countryData: "",
       country:{},
       dateRange:"",
       company: "",
@@ -82,7 +85,7 @@ var app = new Vue({
     created(){
         var self = this;
         self.graphdata = JSON.parse(world_covid_data);
-
+        self.countryData = JSON.parse(covid_data);
         self.companyData = JSON.parse(companies_data);
         self.companyData = self.companyData.sort(sortByDateAscending);        
 
@@ -98,11 +101,19 @@ var app = new Vue({
             company = qArr[1] !== undefined && qArr[1] != null ? qArr[1].replace("company=", "") : "Amazon";
             self.company = company;
             var data = [];
+            var countries = [];
             var companies = [];
             if(q=="1"){
                 self.graphdata.forEach(function(d){             
                     if(new Date(d.date) < new Date('03/01/2020')){
                         data.push(d);
+                        self.dateRange = "from Jan. to Mar. 2020";
+                    }
+                });
+
+                self.countryData.forEach(function(d){             
+                    if(new Date(d.date) < new Date('03/01/2020')){
+                        countries.push(d);
                         self.dateRange = "from Jan. to Mar. 2020";
                     }
                 });
@@ -124,6 +135,13 @@ var app = new Vue({
                     }
                 });
 
+                self.countryData.forEach(function(d){             
+                    if( new Date(d.date) > new Date('03/01/2020') && new Date(d.date) < new Date('05/01/2020')){
+                        countries.push(d);
+                        self.dateRange = "from Mar. to May. 2020";
+                    }
+                });
+
                 self.companyData.forEach(function(d){
                     var date = new Date(d.Date).toLocaleDateString('en-ca');
                     if(d.CompanyName == company && date > new Date('03/01/2020').toLocaleDateString('en-ca')
@@ -140,6 +158,13 @@ var app = new Vue({
                     }
                 });
 
+                self.countryData.forEach(function(d){             
+                    if(new Date(d.date) > new Date('05/01/2020') && new Date(d.date) < new Date('07/01/2020')){
+                        countries.push(d);
+                        self.dateRange = "from May. to Jul. 2020";
+                    }
+                });
+
                 self.companyData.forEach(function(d){
                     var date = new Date(d.Date).toLocaleDateString('en-ca');                        
                     if(d.CompanyName == company && date > new Date('05/01/2020').toLocaleDateString('en-ca')
@@ -152,23 +177,28 @@ var app = new Vue({
             
 
 
-            $.when(data, companies).done(function(d, c){
+            $.when(data, companies, countries).done(function(d, c, cou){
                 if(d.length > 0 && c.length > 0){                    
                     self.graphdata = d;                    
                     setTimeout(function(){
                         var covidFirst = d[0].total_cases;
                         var covidLast = d[d.length - 1].total_cases;
                         var covidGrowth = covidLast - covidFirst;
+
+                        var countryCovidFirst = cou[0].total_cases;
+                        var countryCovidLast = cou[cou.length - 1].total_cases;
+                        var countryCovidGrowth = countryCovidLast - countryCovidFirst;
+
                         var stockFirst = parseInt(c[0].High.replace('$', ''));
                         var stockLast = parseInt(c[c.length - 1].High.replace('$', ''));
                         var stockGrowth = stockLast - stockFirst;
 
-                        self.statistics = {"companyGrowth": stockGrowth, "covidGrowth": covidGrowth}
+                        self.statistics = {"companyGrowth": stockGrowth, "covidGrowth": covidGrowth, "countryCovidGrowth": countryCovidGrowth}
 
 
 
                         self.itemShow = true;
-                        render(d, c, self.dateRange);
+                        render(d, c, cou, self.dateRange);
                     }, 100);
                 }
             });

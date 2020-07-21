@@ -181,6 +181,10 @@ padding-left: 120px;
     margin-left: 80px;
 }
 
+.information-col.all-comparisons{
+    max-height: 320px !important;
+}
+
 .information-col p{
     font-weight: bold;
     font-size: 13pt;
@@ -217,7 +221,11 @@ svg .world-line{
     stroke: #FF7A33;
 }
 
-div.tooltip, div.tooltip2, div.tooltip-company {	
+svg .country-line{
+    stroke: #00cc99;
+}
+
+div.tooltip, div.tooltip2, div.tooltip-company, div.country-tooltip {	
     position: absolute;		
     width: 250px;					
     height: relative;					
@@ -239,6 +247,10 @@ div.tooltip{
 
 div.tooltip-company{
     background: #C3A4FC;
+}
+
+div.country-tooltip{
+    background: #00cc99;
 }
 
 div.tooltip2{
@@ -266,6 +278,11 @@ svg .dots-company{
 svg .world-dots{
     fill: #FF7A33;
     stroke: #FF7A33;
+}
+
+svg .country-dots{
+    fill: #00cc99;
+    stroke: #00cc99;
 }
 
 .besideMouse{
