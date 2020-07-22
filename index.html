@@ -143,12 +143,18 @@
         }
     },
     created(){
+        var cName = "Amazon";
+        var urlArr = window.location.href.split('?');
+        if(urlArr !== undefined && urlArr != null && urlArr.length > 1){
+            cName = urlArr[1].replace("company=", "");
+        }
+
         var dataDef = JSON.parse(companies_data);
         dataDef = dataDef.sort(sortByDateAscending);
         this.graphdata = dataDef;
         this.companies = this.getCompanies(dataDef);
         if(this.graphdata != null && this.graphdata != {}){
-            this.selectCompany('Amazon', true);
+            this.selectCompany(cName, true);
         }            
         flashCompanySelector();
     },

@@ -23,13 +23,7 @@
                 <div>Negin Kashkooli</div>
             </div>
         </div>
-        <input
-            class="btn btn-primary btn-back"
-            action="action"
-            onclick="window.history.go(-1); return false;"
-            type="submit"
-            value="Back"
-        />
+        <a class="btn btn-primary btn-back">Back</a>
         <div class="message">
             <p><strong>This page shows the information related to the impact of covid-19 new cases on the stock price of the company.</strong></p>
             <p>You can also see the other information regarding the growth of covid-19 cases and stock price on the right hand side.</p>
@@ -100,6 +94,7 @@ var app = new Vue({
         if(qArr !== undefined && qArr != null && qArr.length > 0){
             var q = qArr[0] !== undefined && qArr[0] != null ? qArr[0].replace("q=", "") : "1";
             company = qArr[1] !== undefined && qArr[1] != null ? qArr[1].replace("company=", "") : "Amazon";
+            $(".btn-back").attr("href", "index.html?company=" + company);
             $(".nav-link").attr("href", "index3.html?q=" + q + "&company=" + company);
             self.company = company;
             var data = [];
