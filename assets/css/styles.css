@@ -299,3 +299,28 @@ svg .country-dots{
 .besideMouse{
     display: none;
 }
+
+.annotation1 .annotation-note-label{
+    fill: #C3A4FC;
+}
+
+.annotation2 .annotation-note-label{
+    fill: #00cc99;
+}
+
+.annotation3 .annotation-note-label{
+    fill: #FF7A33;
+}
+
+.right-axis{
+    color: #C3A4FC;
+}
+.right-axis-label{
+    fill: #C3A4FC;
+}
+.left-axis{
+    color:#00cc99;
+}
+.left-axis-label{
+    fill: #00cc99;
+}

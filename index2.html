@@ -4,6 +4,7 @@
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
         <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
         <script src='https://d3js.org/d3.v5.min.js'></script>
+        <script src='https://cdnjs.cloudflare.com/ajax/libs/d3-annotation/2.1.0/d3-annotation.min.js'></script>
         <script src="assets/js/owid-covid-data.js"></script>
         <script src="assets/js/d3functions2.js"></script>
         <script src="assets/js/companies_data.js"></script>
@@ -158,9 +159,8 @@ var app = new Vue({
 
             
 
-
             $.when(data, companies).done(function(d, c){
-                if(d.length > 0 && c.length > 0){                    
+                if(d.length > 0 && c.length > 0){       
                     self.graphdata = d;                    
                     setTimeout(function(){
                         var covidFirst = d[0].total_cases;
@@ -179,7 +179,8 @@ var app = new Vue({
 
 
                         self.itemShow = true;
-                        render(d, c, self.dateRange);
+                        
+                        render(d, c, self.dateRange, q);
                     }, 100);
                 }
             });

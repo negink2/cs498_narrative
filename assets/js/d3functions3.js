@@ -1,4 +1,4 @@
-function render(data, companyData, countryData, dateRange) {
+function render(data, companyData, countryData, dateRange, q) {
 
     if(data !== undefined && data != null && data.length > 0
         && countryData !== undefined && countryData != null && countryData.length > 0
@@ -60,6 +60,7 @@ function render(data, companyData, countryData, dateRange) {
         })])
         .range([ height, margin ]);
         svg.append("g")
+        .attr("class", "right-axis")
         .attr("transform", "translate("+ 601  +",0)")
         .call(d3.axisRight(y2));
 
@@ -79,7 +80,7 @@ function render(data, companyData, countryData, dateRange) {
         .attr("x", labelYY)
         .attr("dy", "1em")
         .style("text-anchor", "middle")
-        .text("World's New Covid-19 Cases " + dateRange);
+        .text("New Covid-19 Cases " + dateRange)
 
 
         // Y2 Axis Label
@@ -89,7 +90,8 @@ function render(data, companyData, countryData, dateRange) {
         .attr("x", labelY2Y)
         .attr("dy", "1em")
         .style("text-anchor", "middle")
-        .text(companyData[0].CompanyName + " Stock High Price " + dateRange);
+        .text(companyData[0].CompanyName + " Stock High Price " + dateRange)
+        .attr("class", "right-axis-label");
 
 
         // Company Line
@@ -318,5 +320,159 @@ function render(data, companyData, countryData, dateRange) {
         .attr("opacity", 1)
         .attr("stroke-dashoffset", lineLength)
 
+
+
+        // Annotations
+        var companyName = companyData[0].CompanyName;
+        var ann1x = getAnnotationPosition('x',companyName, q);
+        var ann1y = getAnnotationPosition('y',companyName, q);
+        const annotations1 = [
+            {
+              note: {
+                //title: "Here is the annotation label",
+                label: companyName + "'s Stock Price"
+              },
+              x: ann1x,
+              y: ann1y
+              //,dy: -80,
+              //dx: 10
+            }
+          ];
+
+        var ann2x = getAnnotationPosition('x', 'covid', q);
+        var ann2y = getAnnotationPosition('y', 'covid', q);
+        const annotations2 = [
+            {
+                note: {
+                  label: "United States' Covid-19 Spread",
+                  //title: 'United States Covid-19 Spread'
+                },
+                x: ann2x,
+                y: ann2y
+                //,dy: 80,
+                //dx: 10
+              }
+          ];
+
+        var ann3x = getAnnotationPosition('x', 'world', q);
+        var ann3y = getAnnotationPosition('y', 'world', q);
+        const annotations3 = [
+            {
+                note: {
+                  label: "World's Covid-19 Spread",
+                  //title: 'United States Covid-19 Spread'
+                },
+                x: ann3x,
+                y: ann3y
+                //,dy: 80,
+                //dx: 10
+              }
+          ];
+        const makeAnnotations1 = d3.annotation()
+        .type(d3.annotationLabel)
+        .annotations(annotations1)
+        svg
+        .append("g")
+        .attr("class", "annotation1")
+        .call(makeAnnotations1)
+
+        const makeAnnotations2 = d3.annotation()
+        .type(d3.annotationLabel)
+        .annotations(annotations2)
+        svg
+        .append("g")
+        .attr("class", "annotation2")
+        .call(makeAnnotations2)
+
+        const makeAnnotations3 = d3.annotation()
+        .type(d3.annotationLabel)
+        .annotations(annotations3)
+        svg
+        .append("g")
+        .attr("class", "annotation3")
+        .call(makeAnnotations3)
+
     }
+}
+
+
+function getAnnotationPosition(xory, type, q){
+    result = 0    
+    if(type == "covid"){
+        if(xory == 'x'){
+            if(q==1){
+                result = 130;
+            }
+            else{
+                result = 330;
+            }
+        }
+        else if(xory=='y'){
+            if(q==1){
+                result = 600;
+            }
+            else if (q==2){
+                result = 560;
+            }
+            else if(q==3){
+                result = 480;
+            }
+        }
+    }
+    if(type == "world"){
+        if(xory == 'x'){
+            if(q==1){
+                result = 230;
+            }
+            else{
+                result = 330;
+            }
+        }
+        else if(xory=='y'){
+            if(q==1){
+                result = 380;
+            }
+            else if (q==2){
+                result = 360;
+            }
+            else if(q==3){
+                result = 380;
+            }
+        }
+    }
+    else if(type == "Amazon"){
+        if(xory == 'x'){
+            result = 150;
+        }
+        else if(xory=='y'){
+            result = 130;
+        }
+    }     
+    else if(type == "Apple"){
+        if(xory == 'x'){
+            if(q==1){
+                result = 170;
+            }
+            else{
+                result = 190;
+            }
+        }
+        else if(xory=='y'){
+            result = 130;
+        }        
+    }
+    else if(type == "Tesla"){
+        if(xory == 'x'){
+            if(q==1){
+                result = 170;
+            }
+            else{
+                result = 190;
+            }
+        }
+        else if(xory=='y'){
+            result = 130;
+        }        
+    } 
+    return result;
 }

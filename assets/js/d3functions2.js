@@ -1,4 +1,4 @@
-function render(data, companyData, dateRange) {
+function render(data, companyData, dateRange, q) {
 
     if(data !== undefined && data != null && data.length > 0
         && companyData !== undefined && companyData != null && companyData.length > 0){
@@ -44,6 +44,7 @@ function render(data, companyData, dateRange) {
         })])
         .range([ height, margin ]);
         svg.append("g")
+        .attr("class", "left-axis")
         .attr("transform", "translate("+margin+",0)")
         .call(d3.axisLeft(y));
 
@@ -59,6 +60,7 @@ function render(data, companyData, dateRange) {
         })])
         .range([ height, margin ]);
         svg.append("g")
+        .attr("class", "right-axis")
         .attr("transform", "translate("+ 601  +",0)")
         .call(d3.axisRight(y2));
 
@@ -68,7 +70,7 @@ function render(data, companyData, dateRange) {
         svg.append("text")
         .attr("x", labelXX )
         .attr("y",  labelXY)
-        .style("text-anchor", "middle")
+        .style("text-anchor", "middle")        
         .text("Date");
 
         // Y Axis Label
@@ -78,7 +80,8 @@ function render(data, companyData, dateRange) {
         .attr("x", labelYY)
         .attr("dy", "1em")
         .style("text-anchor", "middle")
-        .text("United States' New Covid-19 Cases " + dateRange);
+        .text("United States' New Covid-19 Cases " + dateRange)
+        .attr("class", "left-axis-label");
 
 
         // Y2 Axis Label
@@ -88,7 +91,8 @@ function render(data, companyData, dateRange) {
         .attr("x", labelY2Y)
         .attr("dy", "1em")
         .style("text-anchor", "middle")
-        .text(companyData[0].CompanyName + " Stock High Price " + dateRange);
+        .text(companyData[0].CompanyName + " Stock High Price " + dateRange)
+        .attr("class", "right-axis-label");
 
 
         // svg.selectAll(".bar")
@@ -145,9 +149,7 @@ function render(data, companyData, dateRange) {
         .transition()
         .duration(2500)
         .ease(d3.easeLinear)
-        .attr("stroke-dashoffset", 0);
-
-
+        .attr("stroke-dashoffset", 0);        
 
 
 
@@ -269,5 +271,110 @@ function render(data, companyData, dateRange) {
         .attr("opacity", 1)
         .attr("stroke-dashoffset", lineLength2)
 
+
+        // Annotations
+        var companyName = companyData[0].CompanyName;
+        var ann1x = getAnnotationPosition('x',companyName, q);
+        var ann1y = getAnnotationPosition('y',companyName, q);
+        const annotations1 = [
+            {
+              note: {
+                //title: "Here is the annotation label",
+                label: companyName + "'s Stock Price"
+              },
+              x: ann1x,
+              y: ann1y
+              //,dy: -80,
+              //dx: 10
+            }
+          ];
+
+        var ann2x = getAnnotationPosition('x', 'covid', q);
+        var ann2y = getAnnotationPosition('y', 'covid', q);
+        const annotations2 = [
+            {
+                note: {
+                  label: "United States' Covid-19 Spread",
+                  //title: 'United States Covid-19 Spread'
+                },
+                x: ann2x,
+                y: ann2y
+                //,dy: 80,
+                //dx: 10
+              }
+          ];
+        const makeAnnotations1 = d3.annotation()
+        .type(d3.annotationLabel)
+        .annotations(annotations1)
+        svg
+        .append("g")
+        .attr("class", "annotation1")
+        .call(makeAnnotations1)
+
+        const makeAnnotations2 = d3.annotation()
+        .type(d3.annotationLabel)
+        .annotations(annotations2)
+        svg
+        .append("g")
+        .attr("class", "annotation2")
+        .call(makeAnnotations2)
+
     }
+}
+
+function getAnnotationPosition(xory, type, q){
+    result = 0    
+    if(type == "covid"){
+        if(xory == 'x'){
+            if(q==1){
+                result = 230;
+            }
+            else{
+                result = 330;
+            }
+        }
+        else if(xory=='y'){
+            if(q==3){
+                result = 480;
+            }
+            else{
+                result = 500;
+            }
+        }
+    }
+    else if(type == "Amazon"){
+        if(xory == 'x'){
+            result = 150;
+        }
+        else if(xory=='y'){
+            result = 130;
+        }
+    }     
+    else if(type == "Apple"){
+        if(xory == 'x'){
+            if(q==1){
+                result = 170;
+            }
+            else{
+                result = 190;
+            }
+        }
+        else if(xory=='y'){
+            result = 130;
+        }        
+    }
+    else if(type == "Tesla"){
+        if(xory == 'x'){
+            if(q==1){
+                result = 170;
+            }
+            else{
+                result = 190;
+            }
+        }
+        else if(xory=='y'){
+            result = 130;
+        }        
+    } 
+    return result;
 }
