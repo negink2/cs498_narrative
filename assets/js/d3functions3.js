@@ -90,7 +90,7 @@ function render(data, companyData, countryData, dateRange, q) {
         .attr("x", labelY2Y)
         .attr("dy", "1em")
         .style("text-anchor", "middle")
-        .text(companyData[0].CompanyName + " Stock High Price " + dateRange)
+        .text(companyData[0].CompanyName + " Stock High Price " + dateRange + " in dollar")
         .attr("class", "right-axis-label");
 
 
@@ -397,7 +397,7 @@ function render(data, companyData, countryData, dateRange, q) {
         svg.append("circle").attr("cx",100).attr("cy",730).attr("r", 6).style("fill", "#C3A4FC")
         svg.append("circle").attr("cx",100).attr("cy",760).attr("r", 6).style("fill", "#00cc99")
         svg.append("circle").attr("cx",100).attr("cy",790).attr("r", 6).style("fill", "#FF7A33")
-        svg.append("text").attr("x", 120).attr("y", 730).text(companyName + "'s Stock Price (High Price)").style("font-size", "15px").attr("alignment-baseline","middle")
+        svg.append("text").attr("x", 120).attr("y", 730).text(companyName + "'s Stock Price in dollar").style("font-size", "15px").attr("alignment-baseline","middle")
         svg.append("text").attr("x", 120).attr("y", 760).text("The United States' Covid-19 Spread").style("font-size", "15px").attr("alignment-baseline","middle")
         svg.append("text").attr("x", 120).attr("y", 790).text("The World' Covid-19 Spread").style("font-size", "15px").attr("alignment-baseline","middle")
 

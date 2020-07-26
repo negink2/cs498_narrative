@@ -60,7 +60,7 @@ function render(data){
         .attr("x", labelYY)
         .attr("dy", "1em")
         .style("text-anchor", "middle")
-        .text("Stock Growth from Jan. 2020 to Jul. 2020");
+        .text("Stock Growth from Jan. 2020 to Jul. 2020  in dollar");
 
 
 
@@ -243,7 +243,7 @@ function render(data){
 
         // Legends
         svg.append("circle").attr("cx",100).attr("cy",730).attr("r", 6).style("fill", "#C3A4FC")
-        svg.append("text").attr("x", 120).attr("y", 730).text(data[0].CompanyName + "'s Stock Price (High Price)").style("font-size", "15px").attr("alignment-baseline","middle")        
+        svg.append("text").attr("x", 120).attr("y", 730).text(data[0].CompanyName + "'s Stock Price in dollar").style("font-size", "15px").attr("alignment-baseline","middle")        
 
     }
 }
