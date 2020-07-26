@@ -240,6 +240,11 @@ function render(data){
         .attr("opacity", 1)
         .attr("stroke-dashoffset", lineLength)
 
+
+        // Legends
+        svg.append("circle").attr("cx",100).attr("cy",730).attr("r", 6).style("fill", "#C3A4FC")
+        svg.append("text").attr("x", 120).attr("y", 730).text(data[0].CompanyName + "'s Stock Price (High Price)").style("font-size", "15px").attr("alignment-baseline","middle")        
+
     }
 }
 
