@@ -91,7 +91,7 @@ function render(data, companyData, dateRange, q) {
         .attr("x", labelY2Y)
         .attr("dy", "1em")
         .style("text-anchor", "middle")
-        .text(companyData[0].CompanyName + " Stock High Price " + dateRange + " in dollar")
+        .text(companyData[0].CompanyName + " Stock Price " + dateRange + " in dollar")
         .attr("class", "right-axis-label");
 
 
