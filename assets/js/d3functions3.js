@@ -326,71 +326,28 @@ function render(data, companyData, countryData, dateRange, q) {
         var companyName = companyData[0].CompanyName;
         var ann1x = getAnnotationPosition('x',companyName, q);
         var ann1y = getAnnotationPosition('y',companyName, q);
-        const annotations1 = [
-            {
-              note: {
-                //title: "Here is the annotation label",
-                label: companyName + "'s Stock Price"
-              },
-              x: ann1x,
-              y: ann1y
-              //,dy: -80,
-              //dx: 10
-            }
-          ];
-
         var ann2x = getAnnotationPosition('x', 'covid', q);
         var ann2y = getAnnotationPosition('y', 'covid', q);
-        const annotations2 = [
-            {
-                note: {
-                  label: "United States' Covid-19 Spread",
-                  //title: 'United States Covid-19 Spread'
-                },
-                x: ann2x,
-                y: ann2y
-                //,dy: 80,
-                //dx: 10
-              }
-          ];
-
         var ann3x = getAnnotationPosition('x', 'world', q);
         var ann3y = getAnnotationPosition('y', 'world', q);
-        const annotations3 = [
-            {
-                note: {
-                  label: "World's Covid-19 Spread",
-                  //title: 'United States Covid-19 Spread'
-                },
-                x: ann3x,
-                y: ann3y
-                //,dy: 80,
-                //dx: 10
-              }
-          ];
-        const makeAnnotations1 = d3.annotation()
-        .type(d3.annotationLabel)
-        .annotations(annotations1)
-        svg
-        .append("g")
+        
+        svg.append("text")        
+        .attr('x', ann1x)
+        .attr('y', ann1y)        
         .attr("class", "annotation1")
-        .call(makeAnnotations1)
+        .text(companyName + "'s Stock Price")
 
-        const makeAnnotations2 = d3.annotation()
-        .type(d3.annotationLabel)
-        .annotations(annotations2)
-        svg
-        .append("g")
+        svg.append("text")        
+        .attr('x', ann2x)
+        .attr('y', ann2y)        
         .attr("class", "annotation2")
-        .call(makeAnnotations2)
+        .text("United States' Covid-19 Spread")
 
-        const makeAnnotations3 = d3.annotation()
-        .type(d3.annotationLabel)
-        .annotations(annotations3)
-        svg
-        .append("g")
+        svg.append("text")        
+        .attr('x', ann3x)
+        .attr('y', ann3y)        
         .attr("class", "annotation3")
-        .call(makeAnnotations3)
+        .text("World's Covid-19 Spread")
 
 
         // Legends
@@ -421,7 +378,7 @@ function getAnnotationPosition(xory, type, q){
                 result = 600;
             }
             else if (q==2){
-                result = 560;
+                result = 570;
             }
             else if(q==3){
                 result = 480;
@@ -467,7 +424,12 @@ function getAnnotationPosition(xory, type, q){
             }
         }
         else if(xory=='y'){
-            result = 130;
+            if(q==1){
+                result = 140;
+            }
+            else{
+                result = 130;
+            }
         }        
     }
     else if(type == "Tesla"){

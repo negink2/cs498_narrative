@@ -300,15 +300,15 @@ svg .country-dots{
     display: none;
 }
 
-.annotation1 .annotation-note-label{
+.annotation1{
     fill: #C3A4FC;
 }
 
-.annotation2 .annotation-note-label{
+.annotation2{
     fill: #00cc99;
 }
 
-.annotation3 .annotation-note-label{
+.annotation3{
     fill: #FF7A33;
 }
 

@@ -276,48 +276,20 @@ function render(data, companyData, dateRange, q) {
         var companyName = companyData[0].CompanyName;
         var ann1x = getAnnotationPosition('x',companyName, q);
         var ann1y = getAnnotationPosition('y',companyName, q);
-        const annotations1 = [
-            {
-              note: {
-                //title: "Here is the annotation label",
-                label: companyName + "'s Stock Price"
-              },
-              x: ann1x,
-              y: ann1y
-              //,dy: -80,
-              //dx: 10
-            }
-          ];
-
         var ann2x = getAnnotationPosition('x', 'covid', q);
-        var ann2y = getAnnotationPosition('y', 'covid', q);
-        const annotations2 = [
-            {
-                note: {
-                  label: "United States' Covid-19 Spread",
-                  //title: 'United States Covid-19 Spread'
-                },
-                x: ann2x,
-                y: ann2y
-                //,dy: 80,
-                //dx: 10
-              }
-          ];
-        const makeAnnotations1 = d3.annotation()
-        .type(d3.annotationLabel)
-        .annotations(annotations1)
-        svg
-        .append("g")
+        var ann2y = getAnnotationPosition('y', 'covid', q);        
+        
+        svg.append("text")        
+        .attr('x', ann1x)
+        .attr('y', ann1y)        
         .attr("class", "annotation1")
-        .call(makeAnnotations1)
+        .text(companyName + "'s Stock Price")
 
-        const makeAnnotations2 = d3.annotation()
-        .type(d3.annotationLabel)
-        .annotations(annotations2)
-        svg
-        .append("g")
+        svg.append("text")        
+        .attr('x', ann2x)
+        .attr('y', ann2y)        
         .attr("class", "annotation2")
-        .call(makeAnnotations2)
+        .text("United States' Covid-19 Spread")
 
 
 
@@ -368,7 +340,12 @@ function getAnnotationPosition(xory, type, q){
             }
         }
         else if(xory=='y'){
-            result = 130;
+            if(q==1){
+                result = 140;
+            }
+            else{
+                result = 130;
+            }
         }        
     }
     else if(type == "Tesla"){
