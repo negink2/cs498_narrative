@@ -241,9 +241,20 @@ function render(data){
         .attr("stroke-dashoffset", lineLength)
 
 
+        // Annotations
+        var companyName = data[0].CompanyName;
+        var ann1x = 340;
+        var ann1y = 180;
+        
+        svg.append("text")        
+        .attr('x', ann1x)
+        .attr('y', ann1y)        
+        .attr("class", "annotation1")
+        .text(companyName + "'s Stock Price")
+
         // Legends
         svg.append("circle").attr("cx",100).attr("cy",730).attr("r", 6).style("fill", "#C3A4FC")
-        svg.append("text").attr("x", 120).attr("y", 730).text(data[0].CompanyName + "'s Stock Price in dollar").style("font-size", "15px").attr("alignment-baseline","middle")        
+        svg.append("text").attr("x", 120).attr("y", 730).text(data[0].CompanyName + "'s Stock Price in dollar").style("font-size", "15px").attr("alignment-baseline","middle")
 
     }
 }
