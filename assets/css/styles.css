@@ -318,3 +318,16 @@ svg .country-dots{
 .right-axis-label{
     fill: #C3A4FC;
 }
+
+.stock{
+    stroke: #C3A4FC;
+    stroke-width: 1;
+}
+.covid-country{
+    stroke: #00cc99;
+    stroke-width: 1;
+}
+.covid-world{
+    stroke: #FF7A33;
+    stroke-width: 1;
+}

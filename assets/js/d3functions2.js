@@ -172,7 +172,7 @@ function render(data, companyData, dateRange, q) {
 
         // line
         var pth = svg
-        .append("path")            
+        .append("path")
         .datum(data)
         .attr("d", line)
         .attr("class", "line")
@@ -274,22 +274,9 @@ function render(data, companyData, dateRange, q) {
 
         // Annotations
         var companyName = companyData[0].CompanyName;
-        var ann1x = getAnnotationPosition('x',companyName, q);
-        var ann1y = getAnnotationPosition('y',companyName, q);
-        var ann2x = getAnnotationPosition('x', 'covid', q);
-        var ann2y = getAnnotationPosition('y', 'covid', q);        
-        
-        svg.append("text")        
-        .attr('x', ann1x)
-        .attr('y', ann1y)        
-        .attr("class", "annotation1")
-        .text(companyName + "'s Stock Price")
 
-        svg.append("text")        
-        .attr('x', ann2x)
-        .attr('y', ann2y)        
-        .attr("class", "annotation2")
-        .text("United States' Covid-19 Spread")
+        setCompanyAnnotation(svg, companyName, q);
+        setCovidAnnotation(svg, q);
 
 
 
@@ -302,64 +289,337 @@ function render(data, companyData, dateRange, q) {
     }
 }
 
-function getAnnotationPosition(xory, type, q){
-    result = 0    
-    if(type == "covid"){
-        if(xory == 'x'){
-            if(q==1){
-                result = 230;
-            }
-            else{
-                result = 330;
-            }
+function setCompanyAnnotation(svg, companyName, q){
+    var line = svg.append('line').attr("class", "stock");
+    var text1, text2, text3;
+    // Apple
+    if(companyName == 'Apple'){
+        if(q==1){
+            line
+            .attr('x1', 545.6).attr('x2', 450)
+            .attr('y1', 181.7).attr('y2', 181);
+
+            var annx = 200;
+            var anny = 182;
+            var textStr1 = companyName + "'s stock price decreased";
+            var textStr2 = "at the end of early pandemic";
+            var textStr3 = "by decreasing covid-19 cases";
+            text1 = svg.append("text").attr("class", "annotation1")
+            .attr('x', annx)
+            .attr('y', anny)
+            .text(textStr1);
+            text2 = svg.append("text").attr("class", "annotation1")
+            .attr('x', annx)
+            .attr('y', anny + 20)
+            .text(textStr2);
+            text3 = svg.append("text").attr("class", "annotation1")
+            .attr('x', annx)
+            .attr('y', anny + 20 + 20)
+            .text(textStr3);
         }
-        else if(xory=='y'){
-            if(q==3){
-                result = 480;
-            }
-            else{
-                result = 500;
-            }
+        if(q==2){
+            line
+            .attr('x1', 261.1417651146629).attr('x2', 261)
+            .attr('y1', 236.59593750000005).attr('y2', 120);
+
+            var annx = 180;
+            var anny = 80;
+            var textStr1 = companyName + "'s stock price started to increase";
+            var textStr2 = "as covid-19 spreade increased rapidly";
+            text1=svg.append("text").attr("class", "annotation1")
+            .attr('x', annx)
+            .attr('y', anny)
+            .text(textStr1);
+            text2=svg.append("text").attr("class", "annotation1")
+            .attr('x', annx)
+            .attr('y', anny + 20)
+            .text(textStr2);
+        }
+        if(q==3){
+            line
+            .attr('x1', 553.3166666666666).attr('x2', 373)
+            .attr('y1', 108.90053763440856).attr('y2', 80);
+
+            var annx = 153;
+            var anny = 80;
+            var textStr1 = companyName + "'s stock price increased";
+            var textStr2 = "at the end of late pandemice";
+            var textStr3 = "as covid-19 increased"
+            text1=svg.append("text").attr("class", "annotation1")
+            .attr('x', annx)
+            .attr('y', anny)
+            .text(textStr1);
+            text2=svg.append("text").attr("class", "annotation1")
+            .attr('x', annx)
+            .attr('y', anny + 20)
+            .text(textStr2);
+            text3=svg.append("text").attr("class", "annotation1")
+            .attr('x', annx)
+            .attr('y', anny + 20 + 20)
+            .text(textStr3);
         }
     }
-    else if(type == "Amazon"){
-        if(xory == 'x'){
-            result = 150;
+    // Amazon
+    else if(companyName == 'Amazon'){
+        if(q==1){
+            line
+            .attr('x1', 545.6333333333333).attr('x2', 400)
+            .attr('y1', 174.316704805492).attr('y2', 281);
+
+            var annx = 150;
+            var anny = 282;
+            var textStr1 = companyName + "'s stock price decreased";
+            var textStr2 = "at the end of early pandemic";
+            var textStr3 = "by decreasing covid-19 cases";
+            text1=svg.append("text").attr("class", "annotation1")
+            .attr('x', annx)
+            .attr('y', anny)
+            .text(textStr1);
+            text2=svg.append("text").attr("class", "annotation1")
+            .attr('x', annx)
+            .attr('y', anny + 20)
+            .text(textStr2);
+            text3=svg.append("text").attr("class", "annotation1")
+            .attr('x', annx)
+            .attr('y', anny + 20 + 20)
+            .text(textStr3);
         }
-        else if(xory=='y'){
-            result = 130;
+        if(q==2){
+            line
+            .attr('x1', 207.32105628908965).attr('x2', 261)
+            .attr('y1', 259.01068888888886).attr('y2', 120);
+
+            var annx = 180;
+            var anny = 80;
+            var textStr1 = companyName + "'s stock price started to increase";
+            var textStr2 = "as covid-19 spreade increased rapidly";
+            text1=svg.append("text").attr("class", "annotation1")
+            .attr('x', annx)
+            .attr('y', anny)
+            .text(textStr1);
+            text2=svg.append("text").attr("class", "annotation1")
+            .attr('x', annx)
+            .attr('y', anny + 20)
+            .text(textStr2);
         }
-    }     
-    else if(type == "Apple"){
-        if(xory == 'x'){
-            if(q==1){
-                result = 170;
-            }
-            else{
-                result = 190;
-            }
+        if(q==3){
+            line
+            .attr('x1', 553.3166666666666).attr('x2', 373)
+            .attr('y1', 105.18723175965664).attr('y2', 80);
+
+            var annx = 153;
+            var anny = 80;
+            var textStr1 = companyName + "'s stock price increased";
+            var textStr2 = "at the end of late pandemice";
+            var textStr3 = "as covid-19 increased"
+            text1=svg.append("text").attr("class", "annotation1")
+            .attr('x', annx)
+            .attr('y', anny)
+            .text(textStr1);
+            text2=svg.append("text").attr("class", "annotation1")
+            .attr('x', annx)
+            .attr('y', anny + 20)
+            .text(textStr2);
+            text3=svg.append("text").attr("class", "annotation1")
+            .attr('x', annx)
+            .attr('y', anny + 20 + 20)
+            .text(textStr3);
         }
-        else if(xory=='y'){
-            if(q==1){
-                result = 140;
-            }
-            else{
-                result = 130;
-            }
-        }        
     }
-    else if(type == "Tesla"){
-        if(xory == 'x'){
-            if(q==1){
-                result = 170;
-            }
-            else{
-                result = 190;
-            }
+    // Tesla
+    else if(companyName == 'Tesla'){
+        if(q==1){
+            line
+            .attr('x1', 545.6333333333333).attr('x2', 320)
+            .attr('y1', 257.6590909090909).attr('y2', 151);
+
+            var annx = 120;
+            var anny = 90;
+            var textStr1 = companyName + "'s stock price decreased";
+            var textStr2 = "at the end of early pandemic";
+            var textStr3 = "by decreasing covid-19 cases";
+            text1=svg.append("text").attr("class", "annotation1")
+            .attr('x', annx)
+            .attr('y', anny)
+            .text(textStr1);
+            text2=svg.append("text").attr("class", "annotation1")
+            .attr('x', annx)
+            .attr('y', anny + 20)
+            .text(textStr2);
+            text3=svg.append("text").attr("class", "annotation1")
+            .attr('x', annx)
+            .attr('y', anny + 20 + 20)
+            .text(textStr3);
         }
-        else if(xory=='y'){
-            result = 130;
-        }        
-    } 
-    return result;
+        if(q==2){
+            line
+            .attr('x1', 222.69840166782487).attr('x2', 261)
+            .attr('y1', 393.75949367088606).attr('y2', 120);
+
+            var annx = 180;
+            var anny = 80;
+            var textStr1 = companyName + "'s stock price started to increase";
+            var textStr2 = "as covid-19 spreade increased rapidly";
+            text1=svg.append("text").attr("class", "annotation1")
+            .attr('x', annx)
+            .attr('y', anny)
+            .text(textStr1);
+            text2=svg.append("text").attr("class", "annotation1")
+            .attr('x', annx)
+            .attr('y', anny + 20)
+            .text(textStr2);
+        }
+        if(q==3){
+            line
+            .attr('x1', 553.3166666666666).attr('x2', 373)
+            .attr('y1', 99.65087396504141).attr('y2', 80);
+
+            var annx = 153;
+            var anny = 80;
+            var textStr1 = companyName + "'s stock price increased";
+            var textStr2 = "at the end of late pandemice";
+            var textStr3 = "as covid-19 increased"
+            text1=svg.append("text").attr("class", "annotation1")
+            .attr('x', annx)
+            .attr('y', anny)
+            .text(textStr1);
+            text2=svg.append("text").attr("class", "annotation1")
+            .attr('x', annx)
+            .attr('y', anny + 20)
+            .text(textStr2);
+            text3=svg.append("text").attr("class", "annotation1")
+            .attr('x', annx)
+            .attr('y', anny + 20 + 20)
+            .text(textStr3);
+        }
+    }
+
+    // Transitions
+    line.attr("opacity", 0)
+    .transition()
+    .duration(2500)
+    .ease(d3.easeLinear)
+    .attr("opacity", 1);
+
+    if(text1 != null){
+        text1.attr("opacity", 0)
+        .transition()
+        .duration(2500)
+        .ease(d3.easeLinear)
+        .attr("opacity", 1);
+    }
+
+    if(text2 != null){
+        text2.attr("opacity", 0)
+        .transition()
+        .duration(2500)
+        .ease(d3.easeLinear)
+        .attr("opacity", 1);
+    }
+
+    if(text3 != null){
+        text3.attr("opacity", 0)
+        .transition()
+        .duration(2500)
+        .ease(d3.easeLinear)
+        .attr("opacity", 1);
+    }
+}
+
+function setCovidAnnotation(svg, q){
+    var text1, text2, text3;
+    var line = svg.append('line').attr("class", "covid-country");
+    if(q==1){
+        line
+        .attr('x1', 561).attr('x2', 300)
+        .attr('y1', 563).attr('y2', 463);
+
+        var annx = 200;
+        var anny = 420;
+        var textStr1 = "Covid-19 spread has decreased";
+        var textStr2 = "at the end of early pandemic";
+        var textStr3 = "after some fluctuations";
+        text1=svg.append("text").attr("class", "annotation2")
+        .attr('x', annx)
+        .attr('y', anny)
+        .text(textStr1);
+        text2=svg.append("text").attr("class", "annotation2")
+        .attr('x', annx)
+        .attr('y', anny + 20)
+        .text(textStr2);
+        text3=svg.append("text").attr("class", "annotation2")
+        .attr('x', annx)
+        .attr('y', anny + 20 + 20)
+        .text(textStr3);
+
+    }
+    if(q==2){
+        line
+        .attr('x1', 222.69840166782487).attr('x2', 361)
+        .attr('y1', 629.9851635104783).attr('y2', 564);
+
+        var annx = 380;
+        var anny = 564;
+        var textStr1 = "Covid-19 spread";
+        var textStr2 = "started to increase rapidly";        
+        text1=svg.append("text").attr("class", "annotation2")
+        .attr('x', annx)
+        .attr('y', anny)
+        .text(textStr1);
+        text2=svg.append("text").attr("class", "annotation2")
+        .attr('x', annx)
+        .attr('y', anny + 20)
+        .text(textStr2);
+
+    }
+    if(q==3){
+        line
+        .attr('x1', 561).attr('x2', 361)
+        .attr('y1', 119.89698420717377).attr('y2', 240);
+
+        var annx = 230;
+        var anny = 270;
+        var textStr1 = "Covid-19 spread";
+        var textStr2 = "increased rapidly in late pandemic";        
+        text1=svg.append("text").attr("class", "annotation2")
+        .attr('x', annx)
+        .attr('y', anny)
+        .text(textStr1);
+        text2=svg.append("text").attr("class", "annotation2")
+        .attr('x', annx)
+        .attr('y', anny + 20)
+        .text(textStr2);
+
+    }
+
+    // Transitions
+    line.attr("opacity", 0)
+    .transition()
+    .duration(2500)
+    .ease(d3.easeLinear)
+    .attr("opacity", 1);
+
+    if(text1 != null){
+        text1.attr("opacity", 0)
+        .transition()
+        .duration(2500)
+        .ease(d3.easeLinear)
+        .attr("opacity", 1);
+    }
+
+    if(text2 != null){
+        text2.attr("opacity", 0)
+        .transition()
+        .duration(2500)
+        .ease(d3.easeLinear)
+        .attr("opacity", 1);
+    }
+
+    if(text3 != null){
+        text3.attr("opacity", 0)
+        .transition()
+        .duration(2500)
+        .ease(d3.easeLinear)
+        .attr("opacity", 1);
+    }
 }

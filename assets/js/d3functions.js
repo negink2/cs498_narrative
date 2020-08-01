@@ -243,14 +243,27 @@ function render(data){
 
         // Annotations
         var companyName = data[0].CompanyName;
-        var ann1x = 340;
-        var ann1y = 180;
+        var ann1x = 520;
+        var ann1y = 280;
+        if(companyName == "Tesla"){
+            ann1y += 60;
+        }
         
         svg.append("text")        
         .attr('x', ann1x)
         .attr('y', ann1y)        
         .attr("class", "annotation1")
         .text(companyName + "'s Stock Price")
+        svg.append("text")
+        .attr('x', ann1x)
+        .attr('y', ann1y + 20)
+        .attr("class", "annotation1")
+        .text("started to increase rapidly");
+        svg.append("text")
+        .attr('x', ann1x)
+        .attr('y', ann1y + 20 + 20)
+        .attr("class", "annotation1")
+        .text("in the late pandemic.");
 
         // Legends
         svg.append("circle").attr("cx",100).attr("cy",730).attr("r", 6).style("fill", "#C3A4FC")
